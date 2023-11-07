@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw' buildActiveScheme='true' importAppTypes='true'>
+    <pages>
+        <page name='operator'/>
+        <page name='varlettype'/>
+        <page name='Array'/>
+        <page name='Dictionary'/>
+        <page name='Set'/>
+        <page name='conditionalStatement'/>
+        <page name='Function'/>
+        <page name='Iteration'/>
+        <page name='Optional'/>
+        <page name='Opt'/>
+    </pages>
+</playground>
