@@ -1,0 +1,164 @@
+drop database mrs;
+
+CREATE DATABASE MRS CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- drop database mrs;
+USE MRS;
+-- drop table book;
+
+CREATE TABLE `Theater` (
+   `t_theater`   varchar(5)   NOT NULL,
+   `t_seat`   int   NULL
+);
+
+CREATE TABLE `Movie_Info` (
+   `mv_title`   varchar(30)   NOT NULL,
+   `mv_runningtime`   int   NULL,
+   `mv_genre`   varchar(10)   NULL,
+   `mv_grade`   int   NULL,
+   `mv_director`   varchar(10)   NULL,
+   `mv_openning`   date   NULL
+);
+
+
+CREATE TABLE `Member` (
+   `m_phone`   varchar(15)   NOT NULL,
+   `m_name`   varchar(10)   NULL,
+   `m_id`   varchar(20)   NULL,
+    `m_pw`   varchar(30)   NULL,
+   `m_manager`   tinyint   NULL
+);
+
+CREATE TABLE `Book` (
+   `b_number`   varchar(20)   NOT NULL,
+   `m_phone`   varchar(15)   NOT NULL,
+   `o_starttime`   time   NOT NULL,
+   `mv_title`   varchar(30)   NOT NULL,
+   `t_theater`   varchar(5)   NOT NULL,
+   `b_date`   datetime   NULL,
+   `b_bookseat`   varchar(5)   NULL
+);
+
+CREATE TABLE `Opened_mv` (
+   `o_starttime`   time   NOT NULL,
+   `mv_title`   varchar(30)   NOT NULL,
+   `t_theater`   varchar(5)   NOT NULL,
+   `o_openseat`   int   NULL
+);
+
+ALTER TABLE `Theater` ADD CONSTRAINT `PK_THEATER` PRIMARY KEY (
+   `t_theater`
+);
+
+ALTER TABLE `Movie_Info` ADD CONSTRAINT `PK_MOVIE_INFO` PRIMARY KEY (
+   `mv_title`
+);
+
+ALTER TABLE `Member` ADD CONSTRAINT `PK_MEMBER` PRIMARY KEY (
+   `m_phone`
+);
+
+ALTER TABLE `Book` ADD CONSTRAINT `PK_BOOK` PRIMARY KEY (
+   `b_number`
+);
+
+ALTER TABLE `Opened_mv` ADD CONSTRAINT `PK_OPENED_MV` PRIMARY KEY (
+   `o_starttime`,
+   `t_theater`
+);
+ALTER TABLE `Opened_mv` ADD CONSTRAINT `FK_Movie_Info_TO_Opened_mv_1` FOREIGN KEY (
+   `mv_title`
+)
+REFERENCES `Movie_Info` (
+   `mv_title`
+);
+
+ALTER TABLE `Opened_mv` ADD CONSTRAINT `FK_Theater_TO_Opened_mv_1` FOREIGN KEY (
+   `t_theater`
+)
+REFERENCES `Theater` (
+   `t_theater`
+);
+
+
+ALTER TABLE `Book` ADD CONSTRAINT `FK_Member_TO_Book_1` FOREIGN KEY (
+   `m_phone`
+)
+REFERENCES `Member` (
+   `m_phone`
+);
+
+ALTER TABLE `Book` ADD CONSTRAINT `FK_Opened_mv_TO_Book_1` FOREIGN KEY (
+   `o_starttime`
+)
+REFERENCES `Opened_mv` (
+   `o_starttime`
+);
+
+ALTER TABLE `Book` ADD CONSTRAINT `FK_Opened_mv_TO_Book_2` FOREIGN KEY (
+   `mv_title`
+)
+REFERENCES `Opened_mv` (
+   `mv_title`
+);
+
+ALTER TABLE `Book` ADD CONSTRAINT `FK_Opened_mv_TO_Book_3` FOREIGN KEY (
+   `t_theater`
+)
+REFERENCES `Opened_mv` (
+   `t_theater`
+);
+
+
+commit;
+
+show databases;
+
+
+-- member 데이터 추가
+
+INSERT INTO `member` VALUES 
+
+('010-1111-2222','김영훈','kyh2222','1111',0),
+('010-0000-3333','이상효','lsh3333','2222',1),
+('010-4444-5555','임호진','lhj4444','3333',0),
+('010-6666-7777','임지환','ljh5555','4444',0),
+('010-8888-9999','박종현','bjh6666','5555',0),
+('010-7777-2222','강해린','비회원','비회원',0),
+('010-5555-2222','팜하니','비회원','비회원',0);
+
+-- theater 데이터 추가
+
+INSERT INTO `theater` VALUES ('A',100),('B',80),('C',60);
+
+
+-- movie_info 데이터 추가
+
+INSERT INTO `movie_info` VALUES 
+('둔2',120,'SF',12,'드니빌뇌브','2023-12-31'),
+('서울의 여름',120,'드라마',12,'김성수','2023-11-22'),
+('스즈메의 창문단속',120,'애니메이션',12,'신카이마코토','2023-03-08'),
+('쏘유',120,'공포',18,'케빈그루터트','2023-12-13'),
+('짱구는 말려',120,'액션',2,'하시모토마사카즈','2020-08-20');
+
+-- opend_movie 데이터 추가
+
+INSERT INTO `opened_mv` VALUES 
+('14:00','둔2','A',100),
+('14:00','짱구는 말려','C',60),
+('16:00','쏘유','C',60),
+('18:00','서울의 여름','B',80),
+('18:00','쏘유','C',58),
+('20:00','둔2','A',100),
+('20:00','스즈메의 창문단속','B',78),
+('16:00','스즈메의 창문단속','B',80),
+('22:00','서울의 여름','A',98);
+
+-- book 데이터 추가
+
+INSERT INTO `book` VALUES 
+('2200AA1','010-0000-3333','22:00','서울의 여름','A','2023-11-11 00:00:00','A1'),
+('2200AA2','010-0000-3333','22:00','서울의 여름','A','2023-11-11 00:00:00','A2'),
+('1800CE9','010-1111-2222','18:00','쏘유','C','2023-11-11 00:00:00','E9'),
+('1800CE10','010-1111-2222','18:00','쏘유','C','2023-11-11 00:00:00','E10'),
+('2000BD3','010-7777-2222','20:00','스즈메의 창문단속','B','2023-11-11 00:00:00','D3'),
+('2000BD4','010-5555-2222','20:00','스즈메의 창문단속','B','2023-11-11 00:00:00','D4');
